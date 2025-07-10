@@ -1,0 +1,13 @@
+.rodape{
+    background-color: #6278F7;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 3rem 1rem;
+}
+
+.social-accounts{
+    display: flex;
+    gap: 2rem;
+}
