@@ -3,62 +3,135 @@ import Banner from './components/Banner';
 import Forms from './components/Forms';
 import Time from './components/Time';
 import Footer from './components/Footer';
+import { v4 as uuidv4 } from 'uuid';
+
 
 function App() {
-  const [colaboradores, setColaborador] = useState([]);
 
-  const aoNovoColaboradorCadastrado = (colaborador) => {
-    setColaborador([...colaboradores, colaborador])
-  }
 
-  const times = [
+  const [times, setTimes] = useState([
     {
+      id: uuidv4(),
+      favorito: false,
       nome: 'Front-end',
-      corPrimaria: '#82CFFA',
-      corSecundaria: '#E8F8FF'
+      cor: '#82CFFA'
     },
     {
+      id: uuidv4(),
+      favorito: false,
       nome: 'Back-end',
-      corPrimaria: '#57C278',
-      corSecundaria: '#D9F7E9'
+      cor: '#57C278'
     },
     {
+      id: uuidv4(),
+      favorito: false,
       nome: 'UX & Design',
-      corPrimaria: '#DB6EBF',
-      corSecundaria: '#FAE9F5'
+      cor: '#DB6EBF'
     },
     {
+      id: uuidv4(),
+      favorito: false,
       nome: 'Data Science',
-      corPrimaria: '#A6D157',
-      corSecundaria: '#F0F8E2'
+      cor: '#A6D157'
     },
     {
+      id: uuidv4(),
+      favorito: false,
       nome: 'DevOps',
-      corPrimaria: '#E06B69',
-      corSecundaria: '#FDE7E8'
+      cor: '#E06B69'
     },
     {
+      id: uuidv4(),
+      favorito: false,
       nome: 'Inovação e Gestão',
-      corPrimaria: '#FF8A29',
-      corSecundaria: '#FFEEDF'
+      cor: '#FF8A29'
     }
 
-  ]
- 
+  ]);
+
+  const inicial = [
+    {
+      nome: 'Fernando Antonio',
+      cargo: 'undefined',
+      imagem: 'https://github.com/nandoantonio-git.png',
+      time: times[1].nome,
+      id:uuidv4(),
+      favorito: false
+    },
+    {
+      nome: 'Fernando Antonio',
+      cargo: 'undefined',
+      imagem: 'https://github.com/nandoantonio-git.png',
+      time: times[2].nome,
+      id:uuidv4(),
+      favorito: false
+    },
+    {
+      nome: 'Fernando Antonio',
+      cargo: 'undefined',
+      imagem: 'https://github.com/nandoantonio-git.png',
+      time: times[3].nome,
+      id:uuidv4(),
+      favorito: false
+    },
+    {
+      nome: 'Fernando Antonio',
+      cargo: 'undefined',
+      imagem: 'https://github.com/nandoantonio-git.png',
+      time: times[4].nome,
+      id:uuidv4(),
+      favorito: false
+    }
+  ];
+
+  const [colaboradores, setColaboradores] = useState(inicial);
+
+  function deletarColaborador(id) {
+    setColaboradores(colaboradores.filter(colaborador => colaborador.id !== id));}
+  
+  const aoNovoColaboradorCadastrado = (colaborador) => {
+    setColaboradores([...colaboradores, colaborador])
+  }
+
+
+  function mudarCorDoTime(cor, id) {
+    setTimes(times.map(time => {
+      if (time.id === id) {
+        time.cor = cor;
+      }
+      return time;
+    }));
+  }
+
+  function cadastrarTime(novoTime){
+    setTimes([...times, {...novoTime, id:uuidv4()}])
+  }
+
+  function resolverFavorito(id){
+    setColaboradores(colaboradores.map( colaborador => {
+      if(colaborador.id === id)colaborador.favorito = !colaborador.favorito;
+      return colaborador;}
+    ))
+  }
+
   return (
     <div className="App">
       <Banner />
-      <Forms times={times.map(time => time.nome)} aoColaboradorCadastrado={colaborador => aoNovoColaboradorCadastrado(colaborador)} />
+      <Forms 
+      cadastrarTime={cadastrarTime}
+      times={times.map(time => time.nome)} aoColaboradorCadastrado={colaborador => aoNovoColaboradorCadastrado(colaborador)} />
       {times.map(time => <Time
         nome={time.nome}
         key={time.nome}
-        corDeFundo={time.corSecundaria}
-        corDestaque={time.corPrimaria}
+        time={time}
+        mudarCor={mudarCorDoTime}
         colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
+        aoDeletar={deletarColaborador}
+        aoFavoritar={resolverFavorito}
       />)}
-      <Footer/>
+      <Footer />
     </div>
-    
+
   );
 }
 
